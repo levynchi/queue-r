@@ -7,7 +7,7 @@ class ProfileInline(admin.StackedInline):
     model = Profile
     can_delete = False
     verbose_name_plural = 'Profile'
-    fields = ['whatsapp_business_number']
+    fields = ['twilio_phone_number']
 
 class UserAdmin(BaseUserAdmin):
     inlines = (ProfileInline,)

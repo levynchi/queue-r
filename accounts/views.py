@@ -1,14 +1,22 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.decorators import login_required
-from .forms import RegisterForm 
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+from .forms import RegisterForm
 from .models import Profile
-from twilio.rest import Client  # Ensure this import is correctly placed
+import logging
+import json
+
+logger = logging.getLogger(__name__)
 
 def landing_page(request):
+    logger.debug("Landing page accessed")
     if request.user.is_authenticated:
+        logger.debug(f"User {request.user.username} is authenticated, redirecting to account_home")
         return redirect('account_home')
+    logger.debug("User is not authenticated, rendering landing_page.html")
     return render(request, 'accounts/landing_page.html')
 
 def register(request):
@@ -40,19 +48,40 @@ def account_home(request):
         profile = Profile.objects.create(user=request.user)
     return render(request, 'accounts/account_home.html', {'profile': profile})
 
-@login_required
-def send_whatsapp_message(request):
-    profile = request.user.profile
+@csrf_exempt
+def incoming_whatsapp_message(request):
     if request.method == 'POST':
-        message_body = request.POST.get('message')
-        client = Client(profile.twilio_sid, profile.twilio_auth_token)
-        message = client.messages.create(
-            body=message_body,
-            from_=f'whatsapp:{profile.twilio_phone_number}',
-            to=f'whatsapp:{profile.whatsapp_business_number}'
-        )
-        # Increment the counter
-        profile.whatsapp_message_count += 1
-        profile.save()
-        return render(request, 'accounts/message_sent.html', {'message': message})
-    return render(request, 'accounts/send_message.html')
+        logger.debug(f"Received POST request with body: {request.body}")
+
+        try:
+            data = json.loads(request.body)
+            triggering_phone_number = data.get('triggering_phone_number')
+            message_body = data.get('message_body')
+            twilio_number = data.get('twilio_number')
+        except json.JSONDecodeError:
+            logger.error("Invalid JSON")
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+
+        logger.debug(f"Extracted triggering_phone_number: {triggering_phone_number}, message_body: {message_body}, twilio_number: {twilio_number}")
+
+        if not triggering_phone_number or not message_body or not twilio_number:
+            logger.error("Missing triggering_phone_number, message_body, or twilio_number")
+            return JsonResponse({'error': 'Missing triggering_phone_number, message_body, or twilio_number'}, status=400)
+
+        # Find the profile associated with the Twilio number
+# Find the profile associated with the Twilio number
+        try:
+            profile = Profile.objects.get(twilio_phone_number=twilio_number)
+            logger.debug(f"Profile found for twilio_number: {twilio_number}")
+            
+            # Increment the counter
+            logger.debug(f"Current whatsapp_message_count: {profile.whatsapp_message_count}")
+            profile.whatsapp_message_count += 1
+            profile.save()
+            logger.debug(f"Updated whatsapp_message_count: {profile.whatsapp_message_count}")
+        except Profile.DoesNotExist:
+            logger.error(f"Profile not found for twilio_number: {twilio_number}")
+            return JsonResponse({'error': 'Profile not found'}, status=404)
+        return JsonResponse({'status': 'success'})
+    logger.error("Invalid request method")
+    return JsonResponse({'error': 'Invalid request method'}, status=405)

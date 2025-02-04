@@ -6,4 +6,5 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('login/', views.login, name='login'),
     path('account_home/', views.account_home, name='account_home'),
+    path('whatsapp/incoming/', views.incoming_whatsapp_message, name='incoming_whatsapp_message'),  # Add this line
 ]
