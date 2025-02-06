@@ -9,8 +9,14 @@ from .models import Profile, Order, OrderNumberTracker
 import logging
 import json
 import requests
+from  django.contrib.auth import logout
+
 
 logger = logging.getLogger(__name__)
+
+def custom_logout(request):
+    logout(request)
+    return redirect('landing_page')
 
 @login_required
 def get_orders(request):
