@@ -2,10 +2,154 @@
 <html>
 <head>
     <title>Accounts Home</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <h2>Welcome to the Accounts Home Page</h2>
     <p>This is the default page for the accounts section.</p>
-    <p>WhatsApp Business Number: {{ profile.whatsapp_business_number }}</p>
+    <p>WhatsApp Business Number: {{ profile.twilio_phone_number }}</p>
+
+    <h3>Orders</h3>
+    <input type="text" id="searchBar" placeholder="Search by Order ID">
+    <button onclick="endShift()">End Shift</button>
+    <table>
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Timestamp</th>
+                <th>Customer Phone Number</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="ordersTable">
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.order_number }}</td>
+                <td>{{ order.timestamp }}</td>
+                <td>{{ order.customer_phone_number }}</td>
+                <td>{{ order.status }}</td>
+                <td>
+                    <button onclick="sendMenu('{{ order.customer_phone_number }}')">Send Menu</button>
+                    <button onclick="markAsReady('{{ order.id }}')">Mark as Ready</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        function sendMenu(phoneNumber) {
+            $.ajax({
+                url: "{% url 'send_menu' %}",
+                type: "POST",
+                data: JSON.stringify({ phone_number: phoneNumber }),
+                contentType: "application/json",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                success: function(response) {
+                    alert(response.message);
+                },
+                error: function(xhr) {
+                    alert("Error: " + xhr.responseText);
+                }
+            });
+        }
+
+        function markAsReady(orderId) {
+            $.ajax({
+                url: "{% url 'mark_as_ready' %}",
+                type: "POST",
+                data: JSON.stringify({ order_id: orderId }),
+                contentType: "application/json",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                success: function(response) {
+                    alert(response.message);
+                    location.reload();
+                },
+                error: function(xhr) {
+                    alert("Error: " + xhr.responseText);
+                }
+            });
+        }
+
+        function endShift() {
+            $.ajax({
+                url: "{% url 'end_shift' %}",
+                type: "POST",
+                contentType: "application/json",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                success: function(response) {
+                    alert(response.message);
+                    $('#ordersTable').empty();  // Clear the table
+                },
+                error: function(xhr) {
+                    alert("Error: " + xhr.responseText);
+                }
+            });
+                }
+        function fetchOrders() {
+            $.ajax({
+                url: "{% url 'get_orders' %}",
+                type: "GET",
+                success: function(response) {
+                    const ordersTable = $('#ordersTable');
+                    ordersTable.empty();
+                    response.orders.forEach(order => {
+                        ordersTable.append(`
+                            <tr>
+                                <td>${order.order_number}</td>
+                                <td>${order.timestamp}</td>
+                                <td>${order.customer_phone_number}</td>
+                                <td>${order.status}</td>
+                                <td>
+                                    <button onclick="sendMenu('${order.customer_phone_number}')">Send Menu</button>
+                                    <button onclick="markAsReady('${order.id}')">Mark as Ready</button>
+                                </td>
+                            </tr>
+                        `);
+                    });
+                },
+                error: function(xhr) {
+                    console.error("Error fetching orders: " + xhr.responseText);
+                }
+            });
+        }
+
+        setInterval(fetchOrders, 5000); // Fetch orders every 5 seconds
+
+        document.getElementById('searchBar').addEventListener('input', function() {
+            const filter = this.value.toUpperCase();
+            const rows = document.getElementById('ordersTable').getElementsByTagName('tr');
+            for (let i = 0; i < rows.length; i++) {
+                const orderId = rows[i].getElementsByTagName('td')[0];
+                if (orderId) {
+                    const txtValue = orderId.textContent || orderId.innerText;
+                    rows[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? '' : 'none';
+                }
+            }
+        });
+    </script>
 </body>
 </html>
