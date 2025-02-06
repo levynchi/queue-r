@@ -47,7 +47,7 @@
                 <td>{{ order.status }}</td>
                 <td>
                     <button onclick="sendMenu('{{ order.customer_phone_number }}')">Send Menu</button>
-                    <button onclick="markAsReady('{{ order.id }}')">Mark as Ready</button>
+                    <button class="mark-as-ready" data-order-id="{{ order.id }}">Mark as Ready</button>
                 </td>
             </tr>
             {% endfor %}
@@ -75,7 +75,7 @@
 
         function markAsReady(orderId) {
             $.ajax({
-                url: "{% url 'mark_as_ready' %}",
+                url: `/accounts/mark_order_as_ready/${orderId}/`,
                 type: "POST",
                 data: JSON.stringify({ order_id: orderId }),
                 contentType: "application/json",
@@ -108,7 +108,8 @@
                     alert("Error: " + xhr.responseText);
                 }
             });
-                }
+        }
+
         function fetchOrders() {
             $.ajax({
                 url: "{% url 'get_orders' %}",
@@ -125,7 +126,7 @@
                                 <td>${order.status}</td>
                                 <td>
                                     <button onclick="sendMenu('${order.customer_phone_number}')">Send Menu</button>
-                                    <button onclick="markAsReady('${order.id}')">Mark as Ready</button>
+                                    <button class="mark-as-ready" data-order-id="${order.id}">Mark as Ready</button>
                                 </td>
                             </tr>
                         `);
@@ -149,6 +150,34 @@
                     rows[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? '' : 'none';
                 }
             }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.mark-as-ready').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    const orderId = this.getAttribute('data-order-id');
+                    fetch(`/accounts/mark_order_as_ready/${orderId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            alert('Order marked as ready and customer notified.');
+                            location.reload();
+                        } else {
+                            alert('Error: ' + data.error);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred.');
+                    });
+                });
+            });
         });
     </script>
 </body>

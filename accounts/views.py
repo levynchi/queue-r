@@ -8,6 +8,7 @@ from .forms import RegisterForm
 from .models import Profile, Order, OrderNumberTracker
 import logging
 import json
+import requests
 
 logger = logging.getLogger(__name__)
 
@@ -147,4 +148,27 @@ def incoming_whatsapp_message(request):
             return JsonResponse({'error': 'Profile not found'}, status=404)
         return JsonResponse({'status': 'success', 'order_id': order_number})    
     logger.error("Invalid request method")
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
+def mark_order_as_ready(request, order_id):
+    if request.method == 'POST':
+        try:
+            order = Order.objects.get(id=order_id, profile__user=request.user)
+            order.status = 'READY'
+            order.save()
+
+            # Send request to Twilio function
+            twilio_function_url = 'https://queue-r-django-twilio-3377.twil.io/notify_order_ready'
+            payload = {
+                'customer_phone_number': order.customer_phone_number,
+                'order_number': order.order_number,
+                'twilio_number': request.user.profile.twilio_phone_number  # Include Twilio numbe
+            }
+            response = requests.post(twilio_function_url, json=payload)
+            response.raise_for_status()
+
+            return JsonResponse({'status': 'success'})
+        except Order.DoesNotExist:
+            return JsonResponse({'error': 'Order not found'}, status=404)
+        except requests.RequestException as e:
+            return JsonResponse({'error': str(e)}, status=500)
     return JsonResponse({'error': 'Invalid request method'}, status=405)

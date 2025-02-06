@@ -12,4 +12,5 @@ urlpatterns = [
     path('end_shift/', views.end_shift, name='end_shift'),
     path('end_shift/', views.end_shift, name='end_shift'),
     path('get_orders/', views.get_orders, name='get_orders'),
+    path('mark_order_as_ready/<int:order_id>/', views.mark_order_as_ready, name='mark_order_as_ready'),
 ]
