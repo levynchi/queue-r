@@ -2,11 +2,19 @@
 <html>
 <head>
     <title>Landing Page</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
 </head>
 <body>
-    <h2>Welcome to queue R</h2>
-    <p>Please choose an option:</p>
-    <a href="{% url 'login' %}">Login</a>
-    <a href="{% url 'register' %}">Register</a>
+    <div class="content">
+        <h1>Welcome to Queue R</h1>
+        <p>This is the landing page content.</p>
+        <!-- Add more content as needed -->
+        <a href="{% url 'register' %}">Register</a>
+        <a href="{% url 'login' %}">Login</a>
+    </div>
+
+    {% include 'includes/footer.html' %}
 </body>
 </html>

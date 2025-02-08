@@ -1,0 +1,36 @@
+{% load static %}
+<footer class="site-footer">
+    <!-- Centered Logo -->
+    <div class="footer-logo-container">
+        <img class="main-logo" src="{% static 'images/LOGO.svg' %}" alt="Queue R Logo">
+    </div>
+
+    <div class="footer-container">
+        <!-- Left Column: menu links -->
+        <div class="footer-left">
+            <nav class="footer-links">
+                <!-- Change these links as needed -->
+                <a href="#product">Product</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </div>
+
+        <!-- Right Column: address and phone -->
+        <div class="footer-right">
+            <p>Hachof 1 st,<br>
+               Shoshanat Haamakim,<br>
+               Israel</p>
+            <p>+972-52-8086466</p>
+        </div>
+    </div>
+
+    <!-- Divider line -->
+    <hr class="footer-divider">
+
+    <!-- Bottom row: © text on the left, smaller Queue R logo on the right -->
+    <div class="footer-bottom">
+        <p>© Queue R 2025 All Rights Reserved</p>
+        <img class="footer-logo" src="{% static 'images/QUEUE R.svg' %}" alt="Queue R Logo">
+    </div>
+</footer>

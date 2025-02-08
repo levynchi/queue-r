@@ -2,13 +2,34 @@
 <html>
 <head>
     <title>Login</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
 </head>
 <body>
-    <h2>Login</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Login</button>
-    </form>
+    <div class="center-container">
+        <div class="login-form">
+            <h2>Log In</h2>
+            <div class="under-login">
+            <form method="post">
+                {% csrf_token %}
+                <!-- Django's form.as_p automatically wraps each field in <p> -->
+                {{ form.as_p }}
+                <!-- Example “Forgot your Password?” row -->
+                <p>
+                    <input type="checkbox" name="remember"> 
+                    <span class="forgot-password">Forget your Password?</span>
+                </p>
+                <button type="submit">log in</button>
+            </form>
+            <div class="register-section">
+                <p>If you don't have an account, please register here</p>
+                <a href="{% url 'register' %}" class="register-button">Register</a>
+            </div>
+            </div>
+    
+        </div>
+    </div>    
+    {% include 'includes/footer.html' %}
 </body>
 </html>

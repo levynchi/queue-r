@@ -1,0 +1,175 @@
+/* Removed CDN import for local Bootstrap installation */
+/* Instead, ensure Bootstrap CSS is served from your local setup, e.g. via a build tool or copying from node_modules */
+
+/* ========== General Page Styling ========== */
+body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa; /* Light gray background for contrast */
+    color: #212529;
+  }
+  
+  /* Header area styling */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header h2 {
+    margin: 0;
+  }
+  
+  .logout-button {
+    background-color: #dc3545; /* Bootstrap's danger/red */
+    border: none;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .logout-button:hover {
+    background-color: #c82333;
+  }
+  
+  /* ========== Headings ========== */
+  h2, h3 {
+    margin: 1rem;
+    font-weight: 600;
+    color: #212529;
+  }
+  
+  /* ========== Search Bar & "End Shift" Button ========== */
+  #searchBar {
+    display: inline-block;
+    width: 300px;
+    padding: 0.5rem;
+    margin: 0 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+  }
+  
+  #searchBar:focus {
+    outline: none;
+    border-color: #80bdff;
+  }
+  
+  button[onclick="endShift()"] {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button[onclick="endShift()"]:hover {
+    background-color: #c82333;
+  }
+  
+  /* ========== Table Layout => Card Style ========== */
+  /* Remove default table borders and spacing */
+  .table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 90%;
+    margin: 1rem auto;
+    background-color: transparent;
+  }
+  
+  /* Hide the header row (since screenshot shows a card layout without table headings) */
+  .table thead {
+    display: none;
+  }
+  
+  /* Each TR is treated like a “card” */
+  .table tbody tr {
+    display: flex;
+    flex-wrap: wrap; /* So columns wrap if viewport is narrow */
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  }
+  
+  /* Cells inside the “card” row */
+  .table tbody tr td {
+    border: none; /* Remove cell borders */
+    padding: 0.5rem 0;
+    flex: 1 1 auto; /* Let them grow/shrink */
+  }
+  
+  .table tbody tr td:nth-child(1) {
+    font-weight: 600; /* Emphasize Order ID */
+  }
+  
+  .table tbody tr td:nth-child(2) {
+    color: #6c757d; /* Subtle text for timestamp */
+    font-size: 0.9rem;
+  }
+  
+  .table tbody tr td:nth-child(3),
+  .table tbody tr td:nth-child(4) {
+    font-size: 0.95rem;
+  }
+  
+  /* Actions cell */
+  .table tbody tr td:last-child {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    flex: 0 0 auto; /* Don’t let this grow too big */
+  }
+  
+  /* ========== Buttons in Table Rows ========== */
+  .table tbody tr td button {
+    border: none;
+    padding: 0.4rem 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  /* “Send Menu” button - neutral style */
+  .table tbody tr td button[onclick^="sendMenu"] {
+    background-color: #fff;
+    color: #343a40;
+    border: 1px solid #ced4da;
+  }
+  
+  .table tbody tr td button[onclick^="sendMenu"]:hover {
+    background-color: #e2e6ea;
+  }
+  
+  /* Mark as Ready button - a green style */
+  .mark-as-ready {
+    background-color: #198754; /* Bootstrap success/green */
+    color: #fff;
+  }
+  
+  .mark-as-ready:hover {
+    background-color: #157347;
+  }
+  
+  /* ========== Responsive Tweaks ========== */
+  @media (max-width: 768px) {
+    /* Each card stacks vertically for smaller screens */
+    .table tbody tr {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    /* Right-align actions become left-aligned */
+    .table tbody tr td:last-child {
+      justify-content: flex-start;
+      margin-top: 0.5rem;
+    }
+  }

@@ -1,0 +1,160 @@
+/* --------------
+   Global Reset
+   -------------- */
+   * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* --------------
+   Footer Base
+   -------------- */
+/* html, body {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+} */
+
+.content {
+    flex: 1;
+}
+
+.site-footer {
+    background-color: #0B1642; /* Navy-like background */
+    color: #ffffff;           /* White text */
+    font-family: Arial, sans-serif;
+    padding: 2rem 1rem;       /* Top/bottom and side padding */
+    margin-top: auto;         /* Pushes the footer to the bottom */
+}
+
+.footer-logo-container {
+    width: 100%;              /* Ensure the container takes full width */
+    display: flex;            /* Use flexbox to center the content */
+    justify-content: center;  /* Center the content horizontally */
+    margin-bottom: 1rem;      /* Add some space below the logo */
+}
+
+.main-logo {
+    width: 120px;  /* Adjust as needed for your design */
+    height: auto;
+}
+
+.footer-container {
+    display: flex;
+    flex-direction: column;   /* Stack children vertically */
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px; /* Constrain max width if you like */
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column; /* Stack each link item vertically */
+    gap: 1rem;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.footer-right {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.footer-divider {
+    border: none;
+    border-top: 1px solid #00dca2; /* A greenish accent; adjust color as needed */
+    margin: 1rem 0;
+}
+
+.footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-bottom p {
+    font-size: 0.95rem;
+}
+
+.footer-logo {
+    width: 80px; /* Adjust size for your smaller brand logo */
+    height: auto;
+}
+
+/* --------------
+   Responsive Breakpoints
+   -------------- */
+
+/* >= 720px */
+@media (min-width: 720px) {
+    .footer-container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .footer-links {
+        flex-direction: column; /* Ensure links are stacked vertically */
+        gap: 1rem;
+    }
+
+    .footer-right {
+        align-items: flex-end;
+        text-align: right;
+    }
+}
+
+/* >= 768px */
+@media (min-width: 768px) {
+    .footer-link {
+        padding: 0.7rem 0;
+    }
+    .link-title {
+        font-size: 1.2rem;
+    }
+    .link-arrow {
+        font-size: 1.2rem;
+    }
+    .footer-logo {
+        width: 90px;
+    }
+}
+
+/* >= 1024px */
+@media (min-width: 1024px) {
+    .footer-links {
+        gap: 1.5rem;
+    }
+    .link-title {
+        font-size: 1.3rem;
+    }
+    .footer-info {
+        gap: 1.5rem;
+    }
+    .footer-text p {
+        font-size: 1rem;
+    }
+    .footer-logo {
+        width: 100px;
+    }
+}

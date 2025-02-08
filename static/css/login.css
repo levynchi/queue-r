@@ -1,0 +1,156 @@
+/* ============
+   Basic Reset
+   ============ */
+   * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ============
+   Page Layout
+   ============ */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1; /* Take up remaining space */
+}
+
+.login-form {
+    width: 100%;
+    max-width: 400px; /* Adjust as needed */
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    text-align: center;
+}
+
+/* ============
+   Header Strip
+   ============ */
+h2 {
+    width: 100%;
+    max-width: 400px;
+    background-color: #0B1642; /* Navy background */
+    color: #fff;               /* White text */
+    text-align: center;
+    font-size: 1.8rem;
+    padding: 1rem 0;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    margin-bottom: -15px; /* Overlap with the form container’s top corners */
+}
+
+/* ============
+   Form Container
+   ============ */
+.under-login {
+    width: 100%;
+    max-width: 400px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 2rem 2rem 3rem;
+    text-align: center;
+}
+
+/* Remove default Django form paragraph spacing and use our own spacing */
+form p {
+    margin-bottom: 1.5rem;
+}
+
+/* Labels can be hidden or styled differently if you wish */
+form label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: bold;
+}
+
+/* Input fields: big, rounded “pill” style */
+form input[type="text"],
+form input[type="password"] {
+    display: block;
+    width: 100%;
+    padding: 0.7rem 1rem;
+    margin: 0.4rem auto;
+    border: 1px solid #ccc;
+    border-radius: 50px; /* Elliptical ends */
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+form input[type="text"]:focus,
+form input[type="password"]:focus {
+    border-color: #0B1642;
+}
+
+/* Checkbox + “Forgot your Password?” row */
+form input[type="checkbox"] {
+    margin-right: 0.4rem;
+    transform: scale(1.2); /* Slightly larger checkbox */
+}
+
+form .forgot-password {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* ============
+   Primary “Log In” Button
+   ============ */
+form button[type="submit"] {
+    background-color: #0B1642; /* Navy pill button */
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 0.7rem 2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background-color 0.3s;
+}
+
+form button[type="submit"]:hover {
+    background-color: #08133a;
+}
+
+/* ============
+   Register Section
+   ============ */
+.register-section {
+    text-align: center;
+    font-size: 0.95rem;
+    color: #666;
+    margin-top: 2rem; /* Add margin to ensure space from the form */
+}
+
+.register-section p {
+    margin-bottom: 1rem;
+}
+
+.register-button {
+    background-color: #00DCA2; /* Bright green “Register” */
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 0.7rem 2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.register-button:hover {
+    background-color: #00b884;
+}
